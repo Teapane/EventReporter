@@ -48,11 +48,11 @@ def load(filename)
 end
 
 def help(options=nil)
-  options.nil? ? ['load', 'queue', 'find'] : describe_command(options[1])
+  options.nil? ? HelpMessage.new : HelpMessage.new(options)
   end
 
 def describe_commands(command)
-  command_valid(command) ? output_help(command) : puts "Sorry, but #{command} is not valid"
+ end
 
 
 def queue(options)
@@ -67,3 +67,19 @@ end
 
  #e = EventReporter.new
  #e.run
+
+ #Attendee = Structure.new (
+  #:first name,
+  #:last name,
+  #:email,
+  #:zipcode,
+  #:city,
+  #:state,
+  #:street,
+  #:phone,
+  #)
+
+#def extract_attendee_info(line)
+ #[ 
+   #lastname.new(line[last_name]).to_s,
+   #etc]

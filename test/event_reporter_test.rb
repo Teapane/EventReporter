@@ -1,6 +1,7 @@
 require 'minitest'
 require 'minitest/autorun'
 require './lib/event_reporter.rb'
+require './lib/help_message.rb'
 
 class EventReporterTest < MiniTest::Unit::TestCase
  def test_does_exist
@@ -14,8 +15,10 @@ def test_load_does_create_csv_object
   assert_kind_of CSV, er.csv
  end
 
- def test_help_does_return_list
+ def test_help_without_params_does_create_standard_message_object
   er = EventReporter.new
-  assert er.help.class == 'Array'
+  m = er.help
+  message = HelpMessage.new
+  assert_equal m.message_to_output, message.message_to_output
  end
 end
