@@ -1,4 +1,5 @@
 require 'csv'
+require './lib/help_message.rb'
 
 class EventReporter
 
@@ -20,22 +21,21 @@ class EventReporter
    def execute_command(command)
     command_parts = command.split(' ')
     
-    command_valid(command_parts) ? run_valid_command(command_parts) : (puts "Sorry, I don't have a #{command_parts[0]} function")
-    puts command_parts
+    command_valid(command_parts[0]) ? run_valid_command(command_parts) : (puts "Sorry, I don't have a #{command_parts[0]} function")
   end
 
 
  def command_valid(command)
    valid_commands = ['load', 'help', 'queue', 'find']
-   valid_commands.include?(command_parts[0])
+   valid_commands.include?(command)
  end
 
- def run_valid_commands(parts_array)
+ def run_valid_command(parts_array)
   case parts_array[0]
-  when 'load' then load_method(parts_array[1..-1])
-  when 'help' then help_method(parts_array[1..-1])
-  when 'queue' then queue_method(parts_array[1..-1])
-  when 'find' then find_method(parts_array[1..-1])
+  when 'load' then load(parts_array[1..-1])
+  when 'help' then help(parts_array[1..-1])
+  when 'queue' then queue(parts_array[1..-1])
+  when 'find' then find(parts_array[1..-1])
   end
  end
 
@@ -47,8 +47,8 @@ def load(filename)
   @csv = CSV.open filename, headers: true, header_converters: :symbol
 end
 
-def help(options=nil)
-  options.nil? ? HelpMessage.new : HelpMessage.new(options)
+def help(options)
+  options.length == 0 ? (puts HelpMessage.new.message_to_output) : (puts HelpMessage.new(options).message_to_output)
   end
 
 def describe_commands(command)
@@ -65,21 +65,7 @@ end
 
 
 
- #e = EventReporter.new
- #e.run
+ e = EventReporter.new
+ e.run
 
- #Attendee = Structure.new (
-  #:first name,
-  #:last name,
-  #:email,
-  #:zipcode,
-  #:city,
-  #:state,
-  #:street,
-  #:phone,
-  #)
-
-#def extract_attendee_info(line)
- #[ 
-   #lastname.new(line[last_name]).to_s,
-   #etc]
+ 
