@@ -1,7 +1,7 @@
 require 'minitest'
 require 'minitest/autorun'
 require 'minitest/pride'
-require './lib/help_message'
+require './lib/help_message.rb'
 
 class HelpMessageTest < MiniTest::Unit::TestCase
 

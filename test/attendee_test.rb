@@ -1,7 +1,7 @@
 require 'minitest'
 require 'minitest/autorun'
 require 'minitest/pride'
-require './lib/attendee.rb'
+require './lib/attendee'
 
 class AttendeeTest < MiniTest::Unit::TestCase
 
