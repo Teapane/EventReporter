@@ -1,5 +1,6 @@
 require 'minitest'
 require 'minitest/autorun'
+require 'minitest/pride'
 require './lib/event_reporter.rb'
 require './lib/help_message.rb'
 
@@ -15,10 +16,5 @@ def test_load_does_create_csv_object
   assert_kind_of CSV, er.csv
  end
 
- def test_help_without_params_does_create_standard_message_object
-  er = EventReporter.new
-  m = er.help
-  message = HelpMessage.new
-  assert_equal m.message_to_output, message.message_to_output
- end
+ 
 end

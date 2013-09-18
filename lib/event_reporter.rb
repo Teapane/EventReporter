@@ -1,5 +1,7 @@
 require 'csv'
 require './lib/help_message.rb'
+require './lib/queue.rb'
+require '.lib/attendee.rb'
 
 class EventReporter
 
@@ -39,9 +41,6 @@ class EventReporter
   end
  end
 
- def load_method(options)
-  options.length == 1 ? load(options[0]) : (puts "Sorry, the correct load syntax is 'load <filename>'")
-end
 
 def load(filename)
   @csv = CSV.open filename, headers: true, header_converters: :symbol
