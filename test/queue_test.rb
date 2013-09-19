@@ -21,13 +21,13 @@ class QueueTest < MiniTest::Unit::TestCase
     assert_kind_of Array, q.attendees
   end
 
-  def test_it_does_create_an_array_of_attendees
+ def test_it_does_create_an_array_of_attendees
   q.attendees.each do |attendee|
    assert_kind_of Attendee, attendee 
-   end
+ end
   end
 
-  def test_it_does_return_a_correct_count
+ def test_it_does_return_a_correct_count
   assert_equal q.attendees.count, q.count
  end
 
@@ -44,12 +44,9 @@ class QueueTest < MiniTest::Unit::TestCase
  def test_it_does_clean_the_data_fields
   q.attendees.each do |attendee|
     assert_kind_of DateTime, attendee.regdate
-    assert_kind_of String, attendee.zipcode
-    assert attendee.zipcode.length == 5, "zipcode not 5 chars"
+    assert_kind_of Zipcode, attendee.zipcode
     assert_kind_of PhoneNumber, attendee.homephone
     end
   end
-
-
 
 end

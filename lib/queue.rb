@@ -1,6 +1,8 @@
 require 'csv'
 require './lib/attendee.rb'
 require './lib/phone_number.rb'
+require './lib/zipcode.rb'
+require './lib/city.rb'
 
 class Queue
 
@@ -19,9 +21,9 @@ class Queue
       arguments_hash[:last_name] = row[:last_name]
       arguments_hash[:email_address] = row[:email_address]
       arguments_hash[:homephone] = clean_phone row[:homephone]
-      arguments_hash[:street] = row[:street]
-      arguments_hash[:city] = row[:city]
-      arguments_hash[:state] = row[:state]
+      arguments_hash[:street] = row[:street].nil? ? "no street" : row[:street]
+      arguments_hash[:city] = clean_city row[:city]
+      arguments_hash[:state] = row[:state].nil? ? "no state" : row[:state]
       arguments_hash[:zipcode] = clean_zipcode row[:zipcode]
       Attendee.new arguments_hash
     end
@@ -43,23 +45,38 @@ class Queue
    PhoneNumber.new phone_string
   end
 
+  def clean_city(city_string)
+    city_string.nil? ? City.new : City.new(city_string)
+  end
+
+
   def clean_zipcode(zip_string)
-    zip_string = "" if zip_string.nil?
-    zip_string.to_s.rjust(5, "0")
+   zip_string.nil?  ? Zipcode.new : Zipcode.new(zip_string)
   end
 
   def print(att=nil)
-    return_string = "#{''.rjust(155, '-') + "\n" + 'LAST NAME'.ljust(15, " ") + 'FIRST NAME'.ljust(15, " ") + 'EMAIL ADDRESS'.ljust(35, ' ') +
-                       'ZIPCODE'.ljust(10, " ") + 'CITY'.ljust(20, ' ') + 'STATE'.ljust(10, ' ') +
-                       'ADDRESS'.ljust(35, " ") + 'PHONE'.ljust(15, ' ') + "\n" + ''.rjust(155, '-')}\n"
-    
-    attendees_to_print = att.nil? ? @attendees : att
+    return_string =  ''.rjust(155, '-') + "\n" 
+    return_string += 'LAST NAME'.ljust(15, " ") 
+    return_string += 'FIRST NAME'.ljust(15, " ") 
+    return_string += 'EMAIL ADDRESS'.ljust(35, ' ') 
+    return_string += 'ZIPCODE'.ljust(10, " ") 
+    return_string += 'CITY'.ljust(20, ' ') 
+    return_string += 'STATE'.ljust(10, ' ')
+    return_string += 'ADDRESS'.ljust(35, " ")
+    return_string += 'PHONE'.ljust(15, ' ') + "\n"
+    return_string += ''.rjust(155, '-') + "\n"
 
-    attendees_to_print.each do |attendee|
-      return_string += "#{attendee.last_name.ljust(15, " ") + attendee.first_name.ljust(15, " ") +
-                          attendee.email_address.ljust(35, ' ') + attendee.zipcode.to_s.ljust(10, ' ') +
-                          attendee.city.ljust(20, " ") + attendee.state.ljust(10, ' ') +
-                          attendee.street.ljust(35, ' ') + attendee.homephone.digits.ljust(15, ' ')}\n"
+     attendees_to_print = att.nil? ? @attendees : att 
+
+     attendees_to_print.each do |attendee|
+      return_string += attendee.last_name.ljust(15, " ")
+      return_string += attendee.first_name.ljust(15, " ")
+      return_string += attendee.email_address.ljust(35, ' ')
+      return_string += attendee.zipcode.digits.ljust(10, ' ')
+      return_string += attendee.city.city_name.ljust(20, " ") 
+      return_string += attendee.state.ljust(10, ' ')
+      return_string += attendee.street.ljust(35, ' ')
+      return_string += attendee.homephone.digits.ljust(15, ' ') +"\n"
     end
     return_string
   end
@@ -70,6 +87,22 @@ class Queue
 
   def print_by_attribute(attribute)
     print sort_by(attribute)
+  end
+  def print_find(attribute, value)
+    print find_by_attribute(attribute, value)
+  end
+
+  def find_by_attribute(attribute, value)
+    case attribute
+    when 'first_name' then @attendees.find_all {|attendee| attendee.first_name == value}
+    when 'last_name' then @attendees.find_all {|attendee| attendee.last_name == value}
+    when 'email_address' then @attendees.find_all {|attendee| attendee.email_address == value}
+    when 'zipcode' then @attendees.find_all {|attendee| attendee.zipcode.digits == value}
+    when 'city' then @attendees.find_all {|attendee| attendee.city == value}
+    when 'state' then @attendees.find_all {|attendee| attendee.state == value}
+    when 'address' then @attendees.find_all {|attendee| attendee.street == value}
+    when 'phone' then @attendees.find_all {|attendee| attendee.homephone.digits == value}
+    end
   end
 
 end
