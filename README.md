@@ -11,7 +11,7 @@ This is an app that can parse TAB files and store them in a database.  The styli
   rake db:migrate
 
   rails s
-```ruby
+```
 The app can be viewed on your local machine [Parser](http://localhost:3000)
 
 **To run the tests**
@@ -23,3 +23,4 @@ The app can be viewed on your local machine [Parser](http://localhost:3000)
 ```
 
 Thank you for your time and hope to hear from you soon!
+ 
